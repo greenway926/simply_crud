@@ -18,12 +18,16 @@ public class VehicleController {
 
     @RequestMapping(value = "/inputVehicle")
     public String inputVehicle(@RequestParam String brand, String type, String plateNumber, int year){
+        Boolean isExists = vehicleRepo.existsVehicleByPlateNumber(plateNumber);
+        if (isExists){
+            return "vehicle sudah tersedia";
+        }
         Vehicle vehicle = new Vehicle(brand, type, plateNumber, year);
         vehicleRepo.save(vehicle);
         return "vehicle berhasil diinput";
     }
 
-    @RequestMapping(value = "getVehicles")
+    @RequestMapping(value = "/getVehicles")
     public String getVehicles(){
         List<Vehicle> vehicles = new ArrayList<>();
         vehicles = vehicleRepo.findAll();
@@ -43,6 +47,7 @@ public class VehicleController {
     @RequestMapping(value = "/updateVehicleYearByPlateNumber")
     public String updateVehicleYearByPlateNumber(@RequestParam String plateNumber, int year){
         Vehicle vehicle = new Vehicle();
+        vehicle = vehicleRepo.findVehicleByPlateNumber(plateNumber);
         vehicle.setYear(year);
         vehicleRepo.save(vehicle);
         return "vehicle berhasil diupdate";
@@ -60,5 +65,14 @@ public class VehicleController {
         return "vehicle berhasil didelete";
     }
 
-
+    @RequestMapping(value = "/deleteVehicleById")
+    public String deleteVehicleById(@RequestParam Long id){
+        Vehicle vehicle = new Vehicle();
+        vehicle = vehicleRepo.findVehicleById(id);
+        if (vehicle == null){
+            return "vehicle tidak ditemukan";
+        }
+        vehicleRepo.delete(vehicle);
+        return "vehicle berhasil didelete";
+    }
 }
