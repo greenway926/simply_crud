@@ -74,4 +74,16 @@ public class Vehicle {
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "id=" + id +
+                ", brand='" + brand + '\'' +
+                ", type='" + type + '\'' +
+                ", plateNumber='" + plateNumber + '\'' +
+                ", year=" + year +
+                ", createdDate=" + createdDate +
+                '}';
+    }
 }
